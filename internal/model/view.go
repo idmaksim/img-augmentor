@@ -6,11 +6,11 @@ import (
 
 func (m Model) View() string {
 	if m.Err != nil {
-		return fmt.Sprintf("Ошибка: %v\n\nНажмите q для выхода", m.Err)
+		return fmt.Sprintf("Error: %v\n\nPress q to exit", m.Err)
 	}
 
 	if m.IsProcessing {
-		return "В обработке...\n\nНажмите q для выхода"
+		return "Processing...\n\nPress q to exit"
 	}
 
 	s := "Select archive to process\n\n"
@@ -21,7 +21,7 @@ func (m Model) View() string {
 			cursor = ">"
 		}
 
-		s += fmt.Sprintf("%s %s\n", cursor, file)
+		s += fmt.Sprintf("%s %s\n", cursor, file.Name())
 	}
 
 	return s
