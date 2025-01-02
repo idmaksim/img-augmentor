@@ -9,7 +9,11 @@ func (m Model) View() string {
 		return fmt.Sprintf("Ошибка: %v\n\nНажмите q для выхода", m.Err)
 	}
 
-	s := "What should you buy?\n\n"
+	if m.IsProcessing {
+		return "В обработке...\n\nНажмите q для выхода"
+	}
+
+	s := "Select archive to process\n\n"
 
 	for i, file := range m.Files {
 		cursor := " "

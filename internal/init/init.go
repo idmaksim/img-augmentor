@@ -17,7 +17,7 @@ func InitModel() (model.Model, error) {
 	return model.Model{
 		Files:    files,
 		Selected: nil,
-		Keys:     keymap.Keys,
+		Keys:     &keymap.Keys,
 		Help:     help.New(),
 		Err:      nil,
 		Cursor:   0,
