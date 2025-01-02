@@ -1,62 +1,9 @@
 package model
 
 import (
-	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/idmaksim/img-augmentor/internal/augmentor"
-	"github.com/idmaksim/img-augmentor/internal/keymap"
 )
-
-type MessageHandler interface {
-	Handle(Model) (Model, tea.Cmd)
-}
-
-type (
-	KeyMessage struct {
-		msg tea.KeyMsg
-	}
-	ProcessFinishedMessage struct{}
-	ErrorMessage           struct {
-		err error
-	}
-)
-
-func NewKeyHandler(msg tea.KeyMsg) MessageHandler {
-	return &KeyMessage{msg: msg}
-}
-
-func NewProcessFinishedHandler() MessageHandler {
-	return &ProcessFinishedMessage{}
-}
-
-func NewErrorHandler(err error) MessageHandler {
-	return &ErrorMessage{err: err}
-}
-
-func (k *KeyMessage) Handle(m Model) (Model, tea.Cmd) {
-	switch {
-	case key.Matches(k.msg, keymap.Keys.Quit):
-		return m, tea.Quit
-	case key.Matches(k.msg, keymap.Keys.Up):
-		return m.moveCursorUp(), nil
-	case key.Matches(k.msg, keymap.Keys.Down):
-		return m.moveCursorDown(), nil
-	case key.Matches(k.msg, keymap.Keys.Enter):
-		return m.startProcessing()
-	default:
-		return m, nil
-	}
-}
-
-func (p *ProcessFinishedMessage) Handle(m Model) (Model, tea.Cmd) {
-	m.IsProcessing, m.Selected = false, nil
-	return m, nil
-}
-
-func (e *ErrorMessage) Handle(m Model) (Model, tea.Cmd) {
-	m.Err, m.IsProcessing = e.err, false
-	return m, nil
-}
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var handler MessageHandler

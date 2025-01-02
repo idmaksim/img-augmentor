@@ -24,7 +24,5 @@ func (m Model) View() string {
 		s += fmt.Sprintf("%s %s\n", cursor, file)
 	}
 
-	s += m.Help.View(m.Keys)
-
 	return s
 }
