@@ -2,27 +2,34 @@ package model
 
 import (
 	"fmt"
+	"strings"
 )
 
 func (m Model) View() string {
+	var s strings.Builder
+	s.WriteString("\n┌──────────────────────────────┐\n")
+	s.WriteString("│      Image Augmentor         │\n")
+	s.WriteString("└──────────────────────────────┘\n\n")
+
 	if m.Err != nil {
-		return fmt.Sprintf("Error: %v\n\nPress q to exit", m.Err)
+		s.WriteString(fmt.Sprintf("❌ Error: %v\n\nPress q to exit", m.Err))
+		return s.String()
 	}
 
 	if m.IsProcessing {
-		return "Processing...\n\nPress q to exit"
+		s.WriteString("⏳ Processing...\n\nPress q to exit")
+		return s.String()
 	}
 
-	s := "Select archive to process\n\n"
+	s.WriteString("📁 Select archive to process:\n\n")
 
 	for i, file := range m.Files {
-		cursor := " "
+		cursor := "  "
 		if m.Cursor == i {
-			cursor = ">"
+			cursor = "▶ "
 		}
-
-		s += fmt.Sprintf("%s %s\n", cursor, file.Name())
+		s.WriteString(fmt.Sprintf("%s%s\n", cursor, file.Name()))
 	}
 
-	return s
+	return s.String()
 }
