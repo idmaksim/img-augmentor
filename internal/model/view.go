@@ -25,10 +25,15 @@ func (m Model) View() string {
 
 	for i, file := range m.Files {
 		cursor := "  "
+		marker := "⛔️"
 		if m.Cursor == i {
 			cursor = "▶ "
 		}
-		s.WriteString(fmt.Sprintf("%s%s\n", cursor, file.Name()))
+
+		if strings.HasSuffix(file.Name(), ".zip") {
+			marker = "✅"
+		}
+		s.WriteString(fmt.Sprintf("%s - %s%s\n", marker, cursor, file.Name()))
 	}
 
 	return s.String()
