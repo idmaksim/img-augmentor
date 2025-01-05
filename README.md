@@ -14,6 +14,7 @@
 ## 🎯 Roadmap
 
 ### Planned Augmentation Methods
+
 - ↔️ Horizontal and vertical flipping
 - 🌟 Brightness adjustment
 - 🎨 Contrast modification
@@ -22,6 +23,7 @@
 - 🎲 Random combinations of effects
 
 ### UI Improvements
+
 - 📊 Progress visualization
 - 📈 Processing statistics
 - 🎨 Enhanced visual design
@@ -29,20 +31,20 @@
 ## 🚀 Installation
 
 ```
-go install github.com/idmaksim/img-augmentor@latest
+go install github.com/idmaksim/img-augmentor/cmd/augmentor@latest
 ```
 
 ## 🛠 Usage
 
 1. Launch the application:
+
 ```
-img-augmentor
+augmentor
 ```
 
 2. Use the interactive TUI to:
    - Select input directory or ZIP file
    - Start processing
-
 
 ## 📚 Dependencies
 
