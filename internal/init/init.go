@@ -13,9 +13,11 @@ func InitModel() (model.Model, error) {
 	}
 
 	return model.Model{
-		Files:    files,
-		Selected: nil,
-		Err:      nil,
-		Cursor:   0,
+		Files:       files,
+		Selected:    nil,
+		Err:         nil,
+		Cursor:      0,
+		PageSize:    10,
+		CurrentPage: 0,
 	}, nil
 }

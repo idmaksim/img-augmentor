@@ -13,4 +13,6 @@ type Model struct {
 	IsProcessing bool
 	Err          error
 	Augmentor    *augmentor.Augmentor
+	PageSize     int
+	CurrentPage  int
 }

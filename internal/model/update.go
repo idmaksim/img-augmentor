@@ -6,18 +6,25 @@ import (
 )
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	var handler MessageHandler
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		handler = NewKeyHandler(msg)
-	case ProcessFinishedMessage:
-		handler = NewProcessFinishedHandler()
-	case error:
-		handler = NewErrorHandler(msg)
-	default:
-		return m, nil
+		switch msg.String() {
+		case "q", "ctrl+c":
+			return m, tea.Quit
+		case "up":
+			m.Cursor = max(m.Cursor-1, 0)
+		case "down":
+			m.Cursor = min(m.Cursor+1, len(m.Files)-1)
+		case "left":
+			m.CurrentPage = max(m.CurrentPage-1, 0)
+			m.Cursor = m.CurrentPage * m.PageSize
+		case "right":
+			maxPage := (len(m.Files)+m.PageSize-1)/m.PageSize - 1
+			m.CurrentPage = min(m.CurrentPage+1, maxPage)
+			m.Cursor = m.CurrentPage * m.PageSize
+		}
 	}
-	return handler.Handle(m)
+	return m, nil
 }
 
 func (m Model) moveCursorUp() Model {

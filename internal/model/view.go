@@ -7,9 +7,6 @@ import (
 )
 
 func (m Model) View() string {
-	var s strings.Builder
-	s.WriteString(m.renderHeader())
-
 	if m.Err != nil {
 		return m.renderError()
 	}
@@ -18,11 +15,19 @@ func (m Model) View() string {
 		return m.renderProcessing()
 	}
 
-	return m.renderFileList()
+	var s strings.Builder
+	s.WriteString(m.renderHeader())
+	s.WriteString(m.renderFileList())
+	return s.String()
 }
 
 func (m Model) renderHeader() string {
-	return "\n┌──────────────────────────────┐\n│      Image Augmentor         │\n└──────────────────────────────┘\n\n"
+	var s strings.Builder
+	s.Grow(70)
+	s.WriteString("\n┌──────────────────────────────┐\n")
+	s.WriteString("│      Image Augmentor         │\n")
+	s.WriteString("└──────────────────────────────┘\n\n")
+	return s.String()
 }
 
 func (m Model) renderError() string {
@@ -37,11 +42,23 @@ func (m Model) renderFileList() string {
 	var s strings.Builder
 	s.WriteString("📁 Select archive to process:\n\n")
 
-	for i, file := range m.Files {
+	if m.PageSize <= 0 {
+		m.PageSize = 10
+	}
+
+	startIdx := m.CurrentPage * m.PageSize
+	endIdx := min(startIdx+m.PageSize, len(m.Files))
+
+	for i := startIdx; i < endIdx; i++ {
+		file := m.Files[i]
 		cursor := m.getCursor(i)
 		marker := m.getMarker(file)
 		s.WriteString(fmt.Sprintf("%s - %s%s\n", marker, cursor, file.Name()))
 	}
+
+	totalPages := (len(m.Files) + m.PageSize - 1) / m.PageSize
+	s.WriteString(fmt.Sprintf("\nPage %d/%d", m.CurrentPage+1, totalPages))
+	s.WriteString("\n← → to navigate pages")
 
 	return s.String()
 }
